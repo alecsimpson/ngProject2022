@@ -7,4 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'course-project';
+
+  navSelection = 'Recipes';
+
+  onNavigate(event) {
+    this.navSelection = event;
+  }
+
 }
