@@ -16,4 +16,8 @@ export class RecipeService {
         return this.recipes.slice(); //Returns a copy of the array instead of a reference
     }
 
+    getRecipe(id: number) {
+        return this.recipes.slice()[id]
+    }
+
 }
