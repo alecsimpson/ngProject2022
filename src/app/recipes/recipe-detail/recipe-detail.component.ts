@@ -16,7 +16,6 @@ export class RecipeDetailComponent implements OnInit {
   constructor(private shoppingListService: ShoppingListService, private route: ActivatedRoute, private recipeService: RecipeService, private router: Router) { }
 
   ngOnInit() {
-    console.log(this.route)
     this.route.params.subscribe(
       (params) => {
         this.recipe = this.recipeService.getRecipe(+params['id'])
@@ -32,6 +31,10 @@ export class RecipeDetailComponent implements OnInit {
   onEditRecipe() {
     this.router.navigate(['edit'], {relativeTo: this.route})
 
+  }
+
+  onDeleteRecipe() {
+    this.recipeService.deleteRecipe(this.recipe)
   }
 
 }

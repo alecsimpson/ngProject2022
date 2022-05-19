@@ -25,14 +25,14 @@
       <ul class="dropdown-menu">
         <li><a (click)="toShoppingList()" style="cursor: pointer;">To Shopping List</a></li>
         <li><a style="cursor: pointer;" (click)="onEditRecipe()">Edit Recipe</a></li>
-        <li><a style="cursor: pointer;">Delete Recipe</a></li>
+        <li><a style="cursor: pointer;" (click)="onDeleteRecipe()" routerLink="..">Delete Recipe</a></li>
       </ul>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-12">
-    {{ recipe.description }}
+    {{ recipe.description }}z
   </div>
 </div>
 <div class="row">
