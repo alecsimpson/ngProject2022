@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RecipeService } from '../recipe.service';
 
 @Component({
   selector: 'app-recipe-default',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RecipeDefaultComponent implements OnInit {
 
-  constructor() { }
+  hasRecipes: boolean = false;
+
+  constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
+    this.recipeService.recipesUpdated.subscribe((recipes) => { this.hasRecipes = true })
   }
 
 }

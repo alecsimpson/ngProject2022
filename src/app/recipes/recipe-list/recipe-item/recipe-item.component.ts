@@ -9,14 +9,9 @@ import { RecipeService } from '../../recipe.service';
   templateUrl: './recipe-item.component.html',
   styleUrls: ['./recipe-item.component.css']
 })
-export class RecipeItemComponent implements OnInit {
-  recipe: Recipe;
+export class RecipeItemComponent {
+  @Input() recipe: Recipe;
   @Input() index!: number;
 
-  constructor(private recipeService: RecipeService, private route: ActivatedRoute) { }
-
-  ngOnInit() {
-    this.recipe = this.recipeService.getRecipe(this.index)
-  }
-
+  constructor() { }
 }
