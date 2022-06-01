@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="margin: 10px">
     <div class="col-xs-12">
         <form [formGroup]="recipeForm" (ngSubmit)="onSave()">
             <div class="row">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <img [src]="imagePath.value" class="img-responsive">
+                        <img [src]="imagePath.value" class="img-responsive" style="max-height:400px">
                     </div>
                 </div>
                 <div class="row">

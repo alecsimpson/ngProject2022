@@ -7,12 +7,12 @@ import { RecipeService } from '../recipe.service';
   styleUrls: ['./recipe-default.component.css']
 })
 export class RecipeDefaultComponent implements OnInit {
-
-  hasRecipes: boolean = false;
+  hasRecipes: boolean;
 
   constructor(private recipeService: RecipeService) { }
 
   ngOnInit(): void {
+    this.hasRecipes = this.recipeService.getRecipes().length > 0;
     this.recipeService.recipesUpdated.subscribe((recipes) => { this.hasRecipes = true })
   }
 
