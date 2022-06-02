@@ -48,6 +48,7 @@ export class AuthService {
     }
 
     logout() {
+        console.log('logging out')
         if(this.tokenExpirationTimer) {
             clearTimeout(this.tokenExpirationTimer)
         }
@@ -63,7 +64,7 @@ export class AuthService {
         this.authToken = event.idToken;
         let expirationDate = new Date(new Date().getTime() + (+event.expiresIn * 1000))
         const user = new User(event.email, event.localId, event.idToken, expirationDate)
-        this.autoLogout(+event.expiresIn)
+        this.autoLogout(expirationDate.getTime())
         this.user.next(user)
         localStorage.setItem('userData', JSON.stringify(user))
     }
