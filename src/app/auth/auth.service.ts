@@ -5,6 +5,7 @@ import { tap, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { User } from "./user.model";
 import { Router } from "@angular/router";
+import { environment } from "src/environments/environment";
 
 export interface AuthResponse {
     kind: string,
@@ -19,7 +20,7 @@ export interface AuthResponse {
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
-    private apiKey: string = 'AIzaSyDadgCutRVTn7OBqPUyR-1n0GG52g6fhwo'
+    private apiKey: string = environment.firebaseAPIKey;
     authToken: string = null;
     user = new Subject<User>();
     private tokenExpirationTimer: any;

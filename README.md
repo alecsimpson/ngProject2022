@@ -1,4 +1,5 @@
 # CourseProject
+Hosted using Firebase at https://ng-project-2022.web.app/
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.0.4.
 
