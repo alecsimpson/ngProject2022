@@ -11,7 +11,6 @@ describe('Component: App', () => {
     }).compileComponents();
   });
 
-
   it('should create app component', () => {
     const fixture = TestBed.createComponent(AppComponent)
     const app = fixture.debugElement.componentInstance;
