@@ -16,7 +16,7 @@ export interface AuthResponse {
     localId: string,
     registered?: boolean
 }
- 
+
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -64,8 +64,9 @@ export class AuthService {
     private handleAuthentication(event: AuthResponse) {
         this.authToken = event.idToken;
         let expirationDate = new Date(new Date().getTime() + (+event.expiresIn * 1000))
+        // console.log(expirationDate)
         const user = new User(event.email, event.localId, event.idToken, expirationDate)
-        this.autoLogout(expirationDate.getTime())
+        this.autoLogout((+event.expiresIn * 1000))
         this.user.next(user)
         localStorage.setItem('userData', JSON.stringify(user))
     }
