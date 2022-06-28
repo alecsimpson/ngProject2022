@@ -3,9 +3,14 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
-import { User } from "./user.model";
 import { Router } from "@angular/router";
 import { environment } from "src/environments/environment";
+import { Store } from "@ngrx/store"
+
+import { User } from "./user.model";
+import { AppState } from "../store/app.reducer";
+import * as authActions from './store/auth.actions';
+
 
 export interface AuthResponse {
     kind: string,
@@ -26,7 +31,7 @@ export class AuthService {
     private tokenExpirationTimer: any;
 
 
-    constructor(private http: HttpClient, private router: Router) {}
+    constructor(private store: Store<AppState>, private http: HttpClient, private router: Router) {}
 
     signUp(credentials: { email: string, password: string }) {
         return this.http.post<AuthResponse>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey, { ...credentials, returnSecureToken: true})
@@ -54,8 +59,7 @@ export class AuthService {
             clearTimeout(this.tokenExpirationTimer)
         }
         this.authToken = null;
-        this.user.next(null);
-        localStorage.removeItem('userData')
+        this.store.dispatch(new authActions.Logout())
         this.router.navigate(['/auth'])
     }
 
@@ -64,22 +68,21 @@ export class AuthService {
     private handleAuthentication(event: AuthResponse) {
         this.authToken = event.idToken;
         let expirationDate = new Date(new Date().getTime() + (+event.expiresIn * 1000))
-        // console.log(expirationDate)
         const user = new User(event.email, event.localId, event.idToken, expirationDate)
         this.autoLogout((+event.expiresIn * 1000))
-        this.user.next(user)
-        localStorage.setItem('userData', JSON.stringify(user))
+        this.store.dispatch(new authActions.Login(user))
     }
 
     autoLogin() {
-        const userData: {email:string, id:string, _token:string, _tokenExpirationDate:string} = JSON.parse(localStorage.getItem('userData'))
+        const userData: {email:string, id:string, _token:string, tokenExpirationDate:string} = JSON.parse(localStorage.getItem('userData'))
         if(!userData) { return }
 
-        const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate))
+        const expDate = new Date(userData.tokenExpirationDate)
+        const loadedUser = new User(userData.email, userData.id, userData._token, expDate)
         if(loadedUser.token) {
-            this.autoLogout(new Date(userData._tokenExpirationDate).getTime() - new Date().getTime())
+            this.autoLogout(new Date(userData.tokenExpirationDate).getTime() - new Date().getTime())
             this.authToken = loadedUser.token
-            this.user.next(loadedUser);
+            this.store.dispatch(new authActions.Login(loadedUser))
         }
     }
 

@@ -1,9 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
+
 import { AuthService } from '../auth/auth.service';
 import { User } from '../auth/user.model';
 import { DataStorageService } from '../shared/dataStorage.service';
+import { AppState } from '../store/app.reducer';
+import { Store } from '@ngrx/store';
+import { AuthState } from '../auth/store/auth.reducer';
+
 
 @Component({
   selector: 'app-header',
@@ -13,12 +19,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   authenticatedState: boolean = false;
   authSub: Subscription;
 
-  constructor(private dataService: DataStorageService, private authService: AuthService) {}
+  constructor(private dataService: DataStorageService, private authService: AuthService, private store: Store<AppState>) {}
 
-  ngOnInit(): void { 
-    this.authSub = this.authService.user.subscribe((user: User) => {
-      this.authenticatedState = !!user;
+  ngOnInit(): void {
+    this.authSub = this.store.select('auth').subscribe((authState: AuthState) => {
+      this.authenticatedState = !!authState.user;
     })
+
     this.authService.autoLogin()
   }
 
