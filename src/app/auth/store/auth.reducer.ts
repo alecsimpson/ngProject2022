@@ -19,6 +19,7 @@ export function authReducer(state = initialState, action: authActions.ActionType
       updatedState.user = new User(action.payload.email, action.payload.id, action.payload.token, action.payload.tokenExpirationDate);
       localStorage.setItem('userData', JSON.stringify(updatedState.user))
       return updatedState;
+
     case authActions.LOGOUT:
       updatedState.user = null;
       localStorage.removeItem('userData')

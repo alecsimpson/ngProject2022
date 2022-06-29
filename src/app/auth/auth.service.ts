@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
 import { tap, catchError } from "rxjs/operators";
 import { throwError } from "rxjs";
 import { Router } from "@angular/router";
@@ -26,8 +25,6 @@ export interface AuthResponse {
 @Injectable({providedIn: 'root'})
 export class AuthService {
     private apiKey: string = environment.firebaseAPIKey;
-    authToken: string = null;
-    user = new Subject<User>();
     private tokenExpirationTimer: any;
 
 
@@ -58,15 +55,11 @@ export class AuthService {
         if(this.tokenExpirationTimer) {
             clearTimeout(this.tokenExpirationTimer)
         }
-        this.authToken = null;
         this.store.dispatch(new authActions.Logout())
         this.router.navigate(['/auth'])
     }
 
-    isAuthenticated(): boolean { return !!this.authToken }
-
-    private handleAuthentication(event: AuthResponse) {
-        this.authToken = event.idToken;
+     private handleAuthentication(event: AuthResponse) {
         let expirationDate = new Date(new Date().getTime() + (+event.expiresIn * 1000))
         const user = new User(event.email, event.localId, event.idToken, expirationDate)
         this.autoLogout((+event.expiresIn * 1000))
@@ -81,7 +74,6 @@ export class AuthService {
         const loadedUser = new User(userData.email, userData.id, userData._token, expDate)
         if(loadedUser.token) {
             this.autoLogout(new Date(userData.tokenExpirationDate).getTime() - new Date().getTime())
-            this.authToken = loadedUser.token
             this.store.dispatch(new authActions.Login(loadedUser))
         }
     }

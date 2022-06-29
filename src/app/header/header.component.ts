@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authSub = this.store.select('auth').subscribe((authState: AuthState) => {
-      this.authenticatedState = !!authState.user;
+      this.authenticatedState = !!authState.user && !!authState.user.token;
     })
 
     this.authService.autoLogin()
