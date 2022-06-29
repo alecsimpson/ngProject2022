@@ -7,7 +7,7 @@ export type ShoppingListState = {
 }
 
 const initalState = {
-  ingredients: [new Ingredient('Test', 1)],
+  ingredients: [],
   editedItemIndex: -1
 }
 
