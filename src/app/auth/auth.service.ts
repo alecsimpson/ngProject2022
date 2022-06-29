@@ -33,7 +33,7 @@ export class AuthService {
     signUp(credentials: { email: string, password: string }) {
         return this.http.post<AuthResponse>('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.apiKey, { ...credentials, returnSecureToken: true})
             .pipe(
-                tap((res) => {
+                tap((res: AuthResponse) => {
                     this.handleAuthentication(res)
                 })
                 // catchError(this.handleError)
@@ -43,7 +43,7 @@ export class AuthService {
     signIn(credentials: { email: string, password: string }) {
         return this.http.post<AuthResponse>('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.apiKey, { ...credentials, returnSecureToken: true})
             .pipe(
-                tap((res) => {
+                tap((res: AuthResponse) => {
                     this.handleAuthentication(res)
                 }),
                 // catchError(this.handleError)
